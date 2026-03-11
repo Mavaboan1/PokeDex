@@ -1,5 +1,6 @@
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
+import { commandMap, commandMapB } from "./command_map.js";
 import { CLICommand } from "./state.js";
 
 export function getCommands(): Record<string, CLICommand> {
@@ -14,5 +15,15 @@ export function getCommands(): Record<string, CLICommand> {
             description: "Displays a help message",
             callback: commandHelp,
         },
+        map: {
+            name: "map",
+            description: "Display names of 20 locations",
+            callback: commandMap,
+        },
+        mapb: {
+            name: "mapb",
+            description: "Display names of 20 previous locations",
+            callback: commandMapB,
+        }
     }
 }
