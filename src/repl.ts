@@ -12,6 +12,7 @@ export async function startREPL(state: State) {
         }
         const commandName = words[0];
         const cmd = state.commands[commandName];
+        const rest = words[1];
 
         if (!cmd) {
             console.log("Unknown command: ", cmd);
@@ -20,7 +21,7 @@ export async function startREPL(state: State) {
         }
 
         try {
-            await cmd.callback(state);
+            await cmd.callback(state, rest);
         } catch (e) {
             console.log((e as Error).message);
         }

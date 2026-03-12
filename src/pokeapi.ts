@@ -1,4 +1,5 @@
 import { ShallowLocations, Location } from "./location_type";
+import { Pokemon } from "./poke_type";
 import { Cache } from "./pokecache.js";
 
 export class PokeAPI {
@@ -58,6 +59,29 @@ export class PokeAPI {
             return location;
         } catch (e) {
             throw new Error(`Error fetching location '${locationName}': ${(e as Error).message}`);
+        }
+    }
+
+    async fetchPokemon(pokemonName: string): Promise<Pokemon> {
+        const url = `${PokeAPI.baseURL}/pokemon/${pokemonName}`;
+
+        const cached = this.pokeCache.get<Pokemon>(url);
+        if (cached !== undefined) {
+            return cached;
+        }
+
+        try {
+            const resp = await fetch(url);
+
+            if (!resp.ok) {
+                throw new Error(`${resp.status} ${resp.statusText}`);
+            }
+
+            const pokemon: Pokemon = await resp.json();
+            this.pokeCache.add(url, pokemon);
+            return pokemon;
+        } catch(e) {
+            throw new Error(`Error fetching pokemon '${pokemonName}': ${(e as Error).message}`);
         }
     }
 
